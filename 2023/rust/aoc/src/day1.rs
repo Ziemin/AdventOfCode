@@ -53,9 +53,12 @@ fn part_2<'a, I: Iterator<Item = &'a [u8]>>(lines: I) -> u64 {
         .map(|text| {
             let text_str = std::str::from_utf8(text).unwrap();
             let l_digit = find_min_pattern(text_str, PATTERNS.iter().cloned()).unwrap();
-            let r_digit =
-                find_min_pattern(text_str, rev_patterns.iter().map(|(s, v)| (s.as_str(), *v)))
-                    .unwrap();
+            let rev_text_str = text_str.chars().rev().collect::<String>();
+            let r_digit = find_min_pattern(
+                rev_text_str.as_str(),
+                rev_patterns.iter().map(|(s, v)| (s.as_str(), *v)),
+            )
+            .unwrap();
 
             (l_digit as u64) * 10 + (r_digit as u64)
         })
@@ -92,30 +95,22 @@ fn read_input(file: &File) -> Result<Vec<String>, std::io::Error> {
 }
 
 fn main() -> std::io::Result<()> {
-    let file_path = std::env::args().nth(1).unwrap();
+    let cmd = std::env::args().nth(1).unwrap();
+    let file_path = std::env::args().nth(2).unwrap();
     let file = File::open(file_path)?;
 
     let lines = read_input(&file)?;
 
-    println!(
-        "Part 1 {}",
-        part_1(
-            lines
-                .iter()
-                .map(AsRef::as_ref)
-                .map(|text: &str| text.as_bytes())
-        )
-    );
+    let input = lines
+        .iter()
+        .map(AsRef::as_ref)
+        .map(|text: &str| text.as_bytes());
 
-    println!(
-        "Part 2 {}",
-        part_2(
-            lines
-                .iter()
-                .map(AsRef::as_ref)
-                .map(|text: &str| text.as_bytes())
-        )
-    );
+    match cmd.as_str() {
+        "part_1" => println!("Part 1 {}", part_1(input)),
+        "part_2" => println!("Part 1 {}", part_2(input)),
+        _ => panic!("Bad command {}", cmd),
+    };
 
     Ok(())
 }
