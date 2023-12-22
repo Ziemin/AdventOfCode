@@ -172,14 +172,14 @@ int part_1(const CubeGraph &graph) {
 int remove_and_check_fallen(const CubeGraph &graph, size_t start_ind) {
 
   CubeGraph fg = graph;
-  unordered_set<size_t> fallen;
+  int fallen = 0;
   queue<size_t> que;
 
   que.push(start_ind);
   while (!que.empty()) {
     size_t ind = que.front();
     que.pop();
-    fallen.insert(ind);
+    fallen++;
 
     for (size_t o_ind : fg.over_neighs[ind]) {
       auto &under_vec = fg.under_neighs[o_ind];
@@ -194,7 +194,7 @@ int remove_and_check_fallen(const CubeGraph &graph, size_t start_ind) {
     }
   }
 
-  return fallen.size() - 1;
+  return fallen - 1;
 }
 
 int part_2(const CubeGraph &graph) {
