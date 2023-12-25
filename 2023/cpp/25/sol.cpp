@@ -136,6 +136,7 @@ size_t part_1(const Graph &graph, const vector<RawEdge> &raw_edges) {
   std::mt19937 gen(rd());
 
   while (true) {
+    // Karger's algorithm but to find a cut of 3
     Graph g = graph;
     while (g.n() != 2) {
       auto [v1, v2] = g.choose_random_edge(gen);
