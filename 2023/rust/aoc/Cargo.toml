@@ -8,4 +8,9 @@ edition = "2021"
 name = "day1"
 path = "src/day1.rs"
 
+[[bin]]
+name = "day25"
+path = "src/day25.rs"
+
 [dependencies]
+rand = "0.8.5"
